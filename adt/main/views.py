@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from .forms import RegisterForm, PatientForm
+from .forms import RegisterForm, PatientForm, AppointmentForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from .models import PatientPost
+from .models import Patient
 
 # Create your views here.
 @login_required(login_url='/login')
@@ -19,7 +19,7 @@ def create_patient(request):
     else:
         form = PatientForm()
 
-    return render(request, 'main/create_patient.html', {"form": form})
+    return render(request, 'main/create.html', {"form": form})
 
 def sign_up(request):
     if request.method == "POST":
@@ -32,3 +32,15 @@ def sign_up(request):
         form = RegisterForm()
 
     return render(request, 'registration/sign_up.html', {'form': form})
+
+@login_required(login_url='/login')
+def create_appointment(request):
+    if request.method == 'POST':
+        form = AppointmentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/home')
+    else:
+        form = AppointmentForm()
+
+    return render(request, 'main/create.html', {"form": form})
