@@ -25,7 +25,7 @@ class Patient(models.Model):
     medical_allergy = models.CharField(max_length=50, null=True, blank=True, default='')
     address_city = models.CharField(max_length=30, null=True, blank=True, default='')
     address_number = models.CharField(max_length=5, null=True, blank=True, default='')
-    satus = models.CharField(default='discharged')
+    status = models.CharField(max_length=20, default='Discharge')
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name

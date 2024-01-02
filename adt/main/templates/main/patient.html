@@ -19,6 +19,9 @@
             Status: {{patient.status}} <br>
         </div>
         <div>
+            <div>
+                <a class="btn btn-success" href="{% url 'patient-edit' patient.id %}">Edit</a>
+            </div>
             <form method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger" name="post-id" value="{{patient.id}}">Delete</button>

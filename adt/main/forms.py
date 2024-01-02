@@ -16,7 +16,7 @@ class RegisterForm(UserCreationForm):
 class PatientForm(forms.ModelForm):
     date_of_birth = DateField(widget=SelectDateWidget)
     sex = ChoiceField(choices=[(True, 'Male'), (False, 'Female')])
-    status = ChoiceField(choices=[('Discharge'), ('Admission'), ('Permit')])
+    status = ChoiceField(choices=[('Discharge', 'Discharge'), ('Admission', 'Admission'), ('Permit', 'Permit')])
 
     class Meta:
         model = Patient

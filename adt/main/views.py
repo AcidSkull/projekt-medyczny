@@ -3,6 +3,7 @@ from .forms import RegisterForm, PatientForm, AppointmentForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound
+from django.shortcuts import get_object_or_404
 from .models import *
 
 # Create your views here.
@@ -60,3 +61,16 @@ def patient(request, id):
             return render(request, 'main/patient.html', {"patient": patient[0]})
         else:
             return HttpResponseNotFound("Patient not found!")
+
+
+@login_required(login_url='/login')
+def edit(request, id):
+    obj = get_object_or_404(Patient, id=id)
+
+    if request.method == 'POST':
+        form = PatientForm(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            return redirect(f'/patient/{id}')
+    else:
+        return render(request, 'main/edit.html', {"form": PatientForm(instance=obj), "obj": obj})
