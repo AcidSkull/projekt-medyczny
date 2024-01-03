@@ -33,8 +33,8 @@ class Patient(models.Model):
 
 class Appointment(models.Model):
 
-    doctor_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    patient_id = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(User, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     date = models.DateField(default=now())
     goal_of_appointment = models.CharField()
 
@@ -53,8 +53,8 @@ class ProcedureCode(models.Model):
 
 
 class Diagnosis(models.Model):
-    doctor_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    patient_id = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(User, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     admission_date = models.DateField(default=now())
     reasons_for_admission = models.CharField(max_length=255, null=True, blank=True, default='')
     diagnostic_tests = models.CharField(max_length=255, null=True, blank=True, default='')
@@ -75,7 +75,7 @@ class Hospital(models.Model):
 
 class Branch(models.Model):
     name = models.CharField(max_length=50)
-    hospital_id = models.ForeignKey(Hospital, on_delete=models.CASCADE)
+    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -84,7 +84,7 @@ class Branch(models.Model):
 class Room(models.Model):
     name = models.CharField(max_length=10)
     number_of_beds = models.CharField(max_length=5)
-    branch_id = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -94,11 +94,11 @@ class HospitalStay(models.Model):
     admission_date = models.DateField(null=True, blank=True, default=now())
     discharge_date = models.DateField(null=True, blank=True, default=None)
     medical_procedures = models.CharField(max_length=512, null=True, blank=True, default='')
-    doctor_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(User, on_delete=models.CASCADE)
     additional_info = models.CharField(max_length=512, null=True, blank=True, default='')
-    diagnosis_id = models.ForeignKey(Diagnosis, on_delete=models.CASCADE)
-    patient_id = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    room_id = models.ForeignKey(Room, on_delete=models.CASCADE)
+    diagnosis = models.ForeignKey(Diagnosis, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.admission_date) + ' - ' + str(self.discharge_date)

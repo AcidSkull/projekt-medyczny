@@ -1,0 +1,56 @@
+{% extends 'main/base.html' %}
+{% block title %}Patient{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="card mt-2">
+    {% if name == 'Patient' %}
+    <div class="card-header"><strong>{{ obj.first_name }}  {{ obj.last_name }}</strong></div>
+    <div class="card-body d-flex flex-row justify-content-between">
+
+        <div>
+            ID Number: {{obj.id_number}}<br>
+            Date of Brith: {{obj.date_of_birth}}<br>
+            Sex: {% if obj.sex %} Male {% else %} Female {% endif %}<br>
+            Telephone: {{obj.telephone}}<br>
+            Blood Group: {{obj.blood_group}}<br>
+            Chronic diseases: <br>
+                {{obj.chronic_diseases}} <br>
+            Medical allergies: <br>
+                {{obj.medical_allergy}} <br>
+            Address: {{obj.address_city}} {{obj.address_number}} <br>
+            Status: {{obj.status}} <br>
+        </div>
+        <div>
+            <div>
+                <a class="btn btn-success" href="{% url 'edit' model_name='patient' id=obj.id %}">Edit</a>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger" name="post-id" value="{{obj.id}}">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% elif name == 'Appointment' %}
+    <div class="card-header"><strong>{{ obj.date }}</strong></div>
+    <div class="card-body d-flex flex-row justify-content-between">
+
+        <div>
+            Doctor: {{doctor.first_name}} {{doctor.last_name}}<br>
+            Patient: <a class="link-info link-offset-2" href="{% url 'view' model_name='patient' id=patient.id %}">{{patient.first_name}} {{patient.last_name}}</a><br>
+            Goal of appointment: {{obj.goal_of_appointment}}<br>
+        </div>
+        <div>
+            <div>
+                <a class="btn btn-success" href="{% url 'edit' model_name='appointment' id=obj.id %}">Edit</a>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger" name="post-id" value="{{obj.id}}">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

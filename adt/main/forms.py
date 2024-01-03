@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import  UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.forms import SelectDateWidget, DateField, ChoiceField, ModelChoiceField
 from .models import *
 
@@ -26,12 +26,12 @@ class PatientForm(forms.ModelForm):
 
 
 class AppointmentForm(forms.ModelForm):
-    doctor_id = ModelChoiceField(queryset=User.objects.all())
-    patient_id = ModelChoiceField(queryset=Patient.objects.all())
+    doctor = ModelChoiceField(queryset=User.objects.filter(groups__name='Doctors'))
+    patient = ModelChoiceField(queryset=Patient.objects.all())
 
     class Meta:
         model = Appointment
-        fields = ['doctor_id', 'patient_id', 'date', 'goal_of_appointment']
+        fields = ['doctor', 'patient', 'date', 'goal_of_appointment']
 
 
 class DiagnosisForm(forms.ModelForm):

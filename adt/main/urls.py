@@ -5,8 +5,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('home', views.home, name='home'),
     path('sign_up', views.sign_up, name='sign_up'),
-    path('create_patient', views.create_patient, name='create_patient'),
-    path('create_appointment', views.create_appointment, name='create_appointment'),
-    path('patient/<int:id>', views.patient, name='patient'),
-    path('edit_patient/<int:id>', views.edit, name='patient-edit'),
+    path('create/<str:model_name>', views.create, name='create'),
+    path('view/<str:model_name>/<int:id>', views.view, name='view'),
+    path('edit/<str:model_name>/<int:id>', views.edit, name='edit'),
 ]
