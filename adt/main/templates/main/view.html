@@ -22,12 +22,12 @@
             Status: {{obj.status}} <br>
         </div>
         <div>
-            <div>
+            <div class="m-1">
                 <a class="btn btn-success" href="{% url 'edit' model_name='patient' id=obj.id %}">Edit</a>
             </div>
             <form method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-danger" name="post-id" value="{{obj.id}}">Delete</button>
+                <button type="submit" class="btn btn-danger m-1" name="post-id" value="{{obj.id}}">Delete</button>
             </form>
         </div>
     </div>
@@ -41,12 +41,12 @@
             Goal of appointment: {{obj.goal_of_appointment}}<br>
         </div>
         <div>
-            <div>
+            <div class="m-1">
                 <a class="btn btn-success" href="{% url 'edit' model_name='appointment' id=obj.id %}">Edit</a>
             </div>
             <form method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-danger" name="post-id" value="{{obj.id}}">Delete</button>
+                <button type="submit" class="btn btn-danger m-1" name="post-id" value="{{obj.id}}">Delete</button>
             </form>
         </div>
     </div>
