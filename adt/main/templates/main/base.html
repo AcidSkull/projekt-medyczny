@@ -26,7 +26,10 @@
                 {% if user.is_authenticated %}
                 <span class="navbar-text">Logged in as {{user.username}} | </span>
                  <li class="nav-item">
-                    <a class="nav-link" href="/logout">Logout</a>
+                    <form id="submit_form" method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <a class="nav-link" onclick="submit_logout()" href="#">Logout</a>
+                    </form>
                 </li>
                 {% else %}
                 <li class="nav-item">
@@ -43,5 +46,10 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script>
+    function submit_logout() {
+        document.getElementById("submit_form").submit();
+    }
+</script>
 </body>
 </html>
