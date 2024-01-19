@@ -1,0 +1,10 @@
+{% extends 'main/base.html' %}
+{% block content %}
+    <div class="card mt-2">
+    {% for i in patients %}
+        {% if i.first_name != '' %}
+        <a href="patient/{{i.id}}" class="card-header" style="text-decoration: none; color: inherit"><strong> {{i}}, id: {{i.id_number}} </strong></a>
+        {% endif %}
+    {% endfor %}
+    </div>
+{% endblock %}

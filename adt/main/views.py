@@ -71,6 +71,14 @@ def view(request, model_name, id):
 
         return render(request, 'main/view.html', context)
 
+@login_required(login_url='/login')
+def list(request, model_name):
+    obj = get_model(model_name)
+    patients = obj.objects.all()
+    for i in patients:
+        print(i)
+
+    return render(request, 'main/list.html', {'patients': patients})
 
 @login_required(login_url='/login')
 def edit(request, model_name, id):
