@@ -57,7 +57,7 @@ def view(request, model_name, id):
         obj = get_model(model_name)
         obj.objects.filter(id=post_id).first()
         if obj:
-            obj.delete()
+            obj.objects.filter(id=id).delete()
         return redirect('home')
     else:
         obj = get_model(model_name)
