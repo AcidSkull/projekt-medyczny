@@ -36,13 +36,13 @@ class AppointmentForm(forms.ModelForm):
 
 
 class DiagnosisForm(forms.ModelForm):
-    doctor_id = ModelChoiceField(queryset=User.objects.all())
-    patient_id = ModelChoiceField(queryset=Patient.objects.all())
+    doctor = ModelChoiceField(queryset=User.objects.all())
+    patient = ModelChoiceField(queryset=Patient.objects.all())
     diagnostic_code = ModelChoiceField(queryset=DiagnosisCode.objects.all())
 
     class Meta:
         model = Diagnosis
-        fields = ['doctor_id', 'patient_id', 'admission_date', 'reasons_for_admission',
+        fields = ['doctor', 'patient', 'admission_date', 'reasons_for_admission',
                   'diagnostic_tests', 'diagnosis', 'treatment_plan', 'diagnosis_code']
 
 
@@ -66,29 +66,29 @@ class HospitalForm(forms.ModelForm):
 
 
 class BranchForm(forms.ModelForm):
-    hospital_id = ModelChoiceField(queryset=Hospital.objects.all())
+    hospital = ModelChoiceField(queryset=Hospital.objects.all())
 
     class Meta:
         model = Branch
-        fields = ['name', 'hospital_id']
+        fields = ['name', 'hospital']
 
 
 class RoomForm(forms.ModelForm):
-    branch_id = ModelChoiceField(queryset=Branch.objects.all())
+    branch = ModelChoiceField(queryset=Branch.objects.all())
 
     class Meta:
         model = Room
-        fields = ['name', 'number_of_beds', 'branch_id']
+        fields = ['name', 'number_of_beds', 'branch']
 
 
 class HospitalStayForm(forms.ModelForm):
-    doctor_id = ModelChoiceField(queryset=User.objects.all())
-    patient_id = ModelChoiceField(queryset=Patient.objects.all())
-    diagnosis_id = ModelChoiceField(queryset=Diagnosis.objects.all())
-    room_id = ModelChoiceField(queryset=Room.objects.all())
+    doctor = ModelChoiceField(queryset=User.objects.all())
+    patient = ModelChoiceField(queryset=Patient.objects.all())
+    diagnosis = ModelChoiceField(queryset=Diagnosis.objects.all())
+    room = ModelChoiceField(queryset=Room.objects.all())
 
     class Meta:
         model = HospitalStay
         fields = ['admission_date', 'discharge_date', 'medical_procedures',
-                  'doctor_id', 'additional_info', 'diagnosis_id', 'patient_id',
-                  'room_id']
+                  'doctor', 'additional_info', 'diagnosis', 'patient',
+                  'room']

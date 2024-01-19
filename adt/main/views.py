@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import RegisterForm, PatientForm, AppointmentForm
+from .forms import *
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound
@@ -11,6 +11,17 @@ def  get_model(name):
         return Patient
     elif name == 'appointment':
         return Appointment
+    elif name == 'diagnosis':
+        return  Diagnosis
+    elif name == 'hospital':
+        return Hospital
+    elif name == 'branch':
+        return Branch
+    elif name == 'room':
+        return Room
+    elif name == 'hospitalstay':
+        return HospitalStay
+
     return None
 
 def get_form(name, *args, **kwargs):
@@ -18,6 +29,17 @@ def get_form(name, *args, **kwargs):
         return PatientForm(*args, **kwargs)
     elif name == 'appointment':
         return AppointmentForm(*args, **kwargs)
+    elif name == 'diagnosis':
+        return  DiagnosisForm(*args, **kwargs)
+    elif name == 'hospital':
+        return HospitalForm(*args, **kwargs)
+    elif name == 'branch':
+        return BranchForm(*args, **kwargs)
+    elif name == 'room':
+        return RoomForm(*args, **kwargs)
+    elif name == 'hospitalstay':
+        return HospitalStayForm(*args, **kwargs)
+    
     return None
 
 
