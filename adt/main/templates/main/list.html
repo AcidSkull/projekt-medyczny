@@ -1,9 +1,13 @@
 {% extends 'main/base.html' %}
 {% block content %}
     <div class="card mt-2">
-    {% for i in patients %}
+    {% for i in content %}
         {% if i.first_name != '' %}
-        <a href="patient/{{i.id}}" class="card-header" style="text-decoration: none; color: inherit"><strong> {{i}}, id: {{i.id_number}} </strong></a>
+            {% if name == 'patient' %}
+                <a href="patient/{{i.id}}" class="card-header" style="text-decoration: none; color: inherit"><strong> {{i}}, id: {{i.id_number}} </strong></a>
+            {% elif name == 'appointment' %}
+                <a href="appointment/{{i.id}}" class="card-header" style="text-decoration: none; color: inherit"><strong> {{i}}, goal: {{i.goal_of_appointment}} </strong></a>
+            {% endif %}
         {% endif %}
     {% endfor %}
     </div>
