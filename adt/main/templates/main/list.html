@@ -4,7 +4,7 @@
     {% for i in content %}
         {% if i.first_name != '' %}
             {% if name == 'patient' %}
-                <a href="patient/{{i.id}}" class="card-header" style="text-decoration: none; color: inherit"><strong> {{i}}, id: {{i.id_number}} </strong></a>
+                <a href="patient/{{i.id}}" class="card-header" style="text-decoration: none; color: inherit"><strong> {{i}} </strong></a>
             {% elif name == 'appointment' %}
                 <a href="appointment/{{i.id}}" class="card-header" style="text-decoration: none; color: inherit"><strong> {{i}}, goal: {{i.goal_of_appointment}} </strong></a>
             {% endif %}

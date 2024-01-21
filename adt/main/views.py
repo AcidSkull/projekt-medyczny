@@ -21,6 +21,8 @@ def  get_model(name):
         return Room
     elif name == 'hospitalstay':
         return HospitalStay
+    elif name == 'diagnosiscode':
+        return DiagnosisCode
 
     return None
 
@@ -39,6 +41,8 @@ def get_form(name, *args, **kwargs):
         return RoomForm(*args, **kwargs)
     elif name == 'hospitalstay':
         return HospitalStayForm(*args, **kwargs)
+    elif name == 'diagnosiscode':
+        return DiagnosisCodeForm(*args, **kwargs)
     
     return None
 
@@ -87,9 +91,19 @@ def view(request, model_name, id):
         obj = obj.objects.filter(id=id).values()
         context = {"obj": obj[0], "name": name}
 
-        if name == "Appointment":
+        if name == "Appointment" :
             context['patient'] = Patient.objects.filter(id=context['obj']['patient_id'])[0]
             context['doctor'] = User.objects.filter(id=context['obj']['doctor_id'])[0]
+        elif name == 'Patient':
+            context['diagnosis'] = Diagnosis.objects.filter(patient_id=context['obj']['id'])
+            context['hospitalstay'] = HospitalStay.objects.filter(patient_id=context['obj']['id'])
+        elif name == 'HospitalStay':
+            context['doctor'] = User.objects.filter(id=context['obj']['doctor_id'])[0]
+            context['room'] = Room.objects.filter(id=context['obj']['room_id'])[0]
+        elif name == 'Diagnosis':
+            context['patient'] = Patient.objects.filter(id=context['obj']['patient_id'])[0]
+            context['doctor'] = User.objects.filter(id=context['obj']['doctor_id'])[0]
+            context['diagnosiscode'] = DiagnosisCode.objects.filter(id=context['obj']['diagnosis_code_id'])[0]
 
         return render(request, 'main/view.html', context)
 
