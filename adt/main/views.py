@@ -62,8 +62,9 @@ def create(request, model_name):
     else:
         form = get_form(model_name)
 
-    return render(request, 'main/create.html', {"form": form})
+    return render(request, 'main/create.html', {"form": form, 'name': model_name})
 
+@login_required(login_url='/login')
 def sign_up(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -125,4 +126,4 @@ def edit(request, model_name, id):
             return redirect(f'/view/{model_name}/{id}')
     else:
         form = get_form(model_name, instance=obj)
-        return render(request, 'main/edit.html', {"form": form, "obj": obj})
+        return render(request, 'main/edit.html', {"form": form, "obj": obj, 'name': model_name})
