@@ -1,9 +1,11 @@
 from django import forms
 from django.contrib.auth.forms import  UserCreationForm
 from django.contrib.auth.models import User, Group
-from django.forms import SelectDateWidget, DateField, ChoiceField, ModelChoiceField, Textarea
+from django.forms import SelectDateWidget, DateField, ChoiceField, ModelChoiceField, Textarea, DateInput
 from .models import *
 
+class DateInputButBetter(DateInput):
+    input_type = 'date'
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -15,7 +17,6 @@ class RegisterForm(UserCreationForm):
 
 
 class PatientForm(forms.ModelForm):
-    date_of_birth = DateField(widget=SelectDateWidget)
     sex = ChoiceField(choices=[(True, 'Male'), (False, 'Female')])
     status = ChoiceField(choices=[('Discharge', 'Discharge'), ('Admission', 'Admission'), ('Permit', 'Permit')])
 
@@ -25,6 +26,7 @@ class PatientForm(forms.ModelForm):
                   'blood_group', 'chronic_diseases', 'medical_allergy', 'address_city', 'address_number',
                   'status']
         widgets = {
+            'date_of_birth' : DateInputButBetter,
             'chronic_diseases' : Textarea,
             'medical_allergy' : Textarea,
         }
@@ -39,6 +41,7 @@ class AppointmentForm(forms.ModelForm):
         fields = ['doctor', 'patient', 'date', 'goal_of_appointment']
         widgets = {
             'goal_of_appointment' : Textarea,
+            'date' : DateInputButBetter,
         }
 
 
@@ -51,6 +54,9 @@ class DiagnosisForm(forms.ModelForm):
         model = Diagnosis
         fields = ['doctor', 'patient', 'admission_date', 'reasons_for_admission',
                   'diagnostic_tests', 'diagnosis', 'treatment_plan', 'diagnosis_code']
+        widgets = {
+            'admission_date' : DateInputButBetter,
+        }
 
 
 class DiagnosisCodeForm(forms.ModelForm):
@@ -101,5 +107,7 @@ class HospitalStayForm(forms.ModelForm):
                   'doctor', 'additional_info', 'patient',
                   'room']
         widgets = {
+            'admission_date' : DateInputButBetter,
+            'discharge_date' : DateInputButBetter,
             'additional_info' : Textarea,
         }
