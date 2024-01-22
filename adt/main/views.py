@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import RegisterForm, PatientForm, AppointmentForm
+from .forms import *
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound
@@ -11,6 +11,19 @@ def  get_model(name):
         return Patient
     elif name == 'appointment':
         return Appointment
+    elif name == 'diagnosis':
+        return  Diagnosis
+    elif name == 'hospital':
+        return Hospital
+    elif name == 'branch':
+        return Branch
+    elif name == 'room':
+        return Room
+    elif name == 'hospitalstay':
+        return HospitalStay
+    elif name == 'diagnosiscode':
+        return DiagnosisCode
+
     return None
 
 def get_form(name, *args, **kwargs):
@@ -18,6 +31,19 @@ def get_form(name, *args, **kwargs):
         return PatientForm(*args, **kwargs)
     elif name == 'appointment':
         return AppointmentForm(*args, **kwargs)
+    elif name == 'diagnosis':
+        return  DiagnosisForm(*args, **kwargs)
+    elif name == 'hospital':
+        return HospitalForm(*args, **kwargs)
+    elif name == 'branch':
+        return BranchForm(*args, **kwargs)
+    elif name == 'room':
+        return RoomForm(*args, **kwargs)
+    elif name == 'hospitalstay':
+        return HospitalStayForm(*args, **kwargs)
+    elif name == 'diagnosiscode':
+        return DiagnosisCodeForm(*args, **kwargs)
+    
     return None
 
 
@@ -36,8 +62,9 @@ def create(request, model_name):
     else:
         form = get_form(model_name)
 
-    return render(request, 'main/create.html', {"form": form})
+    return render(request, 'main/create.html', {"form": form, 'name': model_name})
 
+@login_required(login_url='/login')
 def sign_up(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -57,7 +84,7 @@ def view(request, model_name, id):
         obj = get_model(model_name)
         obj.objects.filter(id=post_id).first()
         if obj:
-            obj.delete()
+            obj.objects.filter(id=id).delete()
         return redirect('home')
     else:
         obj = get_model(model_name)
@@ -65,12 +92,28 @@ def view(request, model_name, id):
         obj = obj.objects.filter(id=id).values()
         context = {"obj": obj[0], "name": name}
 
-        if name == "Appointment":
+        if name == "Appointment" :
             context['patient'] = Patient.objects.filter(id=context['obj']['patient_id'])[0]
             context['doctor'] = User.objects.filter(id=context['obj']['doctor_id'])[0]
+        elif name == 'Patient':
+            context['diagnosis'] = Diagnosis.objects.filter(patient_id=context['obj']['id'])
+            context['hospitalstay'] = HospitalStay.objects.filter(patient_id=context['obj']['id'])
+        elif name == 'HospitalStay':
+            context['doctor'] = User.objects.filter(id=context['obj']['doctor_id'])[0]
+            context['room'] = Room.objects.filter(id=context['obj']['room_id'])[0]
+        elif name == 'Diagnosis':
+            context['patient'] = Patient.objects.filter(id=context['obj']['patient_id'])[0]
+            context['doctor'] = User.objects.filter(id=context['obj']['doctor_id'])[0]
+            context['diagnosiscode'] = DiagnosisCode.objects.filter(id=context['obj']['diagnosis_code_id'])[0]
 
         return render(request, 'main/view.html', context)
 
+@login_required(login_url='/login')
+def list(request, model_name):
+    obj = get_model(model_name)
+    content = obj.objects.all()
+
+    return render(request, 'main/list.html', {'content': content, 'name': model_name})
 
 @login_required(login_url='/login')
 def edit(request, model_name, id):
@@ -83,4 +126,4 @@ def edit(request, model_name, id):
             return redirect(f'/view/{model_name}/{id}')
     else:
         form = get_form(model_name, instance=obj)
-        return render(request, 'main/edit.html', {"form": form, "obj": obj})
+        return render(request, 'main/edit.html', {"form": form, "obj": obj, 'name': model_name})

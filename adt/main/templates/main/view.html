@@ -1,5 +1,5 @@
 {% extends 'main/base.html' %}
-{% block title %}Patient{% endblock %}
+{% block title %}Create {{ name | title }}{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
 
@@ -9,44 +9,98 @@
     <div class="card-body d-flex flex-row justify-content-between">
 
         <div>
-            ID Number: {{obj.id_number}}<br>
-            Date of Brith: {{obj.date_of_birth}}<br>
-            Sex: {% if obj.sex %} Male {% else %} Female {% endif %}<br>
-            Telephone: {{obj.telephone}}<br>
-            Blood Group: {{obj.blood_group}}<br>
-            Chronic diseases: <br>
+            <strong> Number:</strong> {{obj.id_number}}<br>
+            <strong>Date of Brith:</strong> {{obj.date_of_birth}}<br>
+           <strong> Sex:</strong> {% if obj.sex %} Male {% else %} Female {% endif %}<br>
+           <strong> Telephone:</strong> {{obj.telephone}}<br>
+            <strong>Blood Group:</strong>{{obj.blood_group}}<br>
+            <strong>Chronic diseases</strong>: <br>
                 {{obj.chronic_diseases}} <br>
-            Medical allergies: <br>
+            <strong>Medical allergies:</strong> <br>
                 {{obj.medical_allergy}} <br>
-            Address: {{obj.address_city}} {{obj.address_number}} <br>
-            Status: {{obj.status}} <br>
+            <strong>Address:</strong> {{obj.address_city}} {{obj.address_number}} <br>
+            <strong>Status:</strong> {{obj.status}} <br>
         </div>
         <div>
-            <div>
+            <div class="m-1">
                 <a class="btn btn-success" href="{% url 'edit' model_name='patient' id=obj.id %}">Edit</a>
             </div>
             <form method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-danger" name="post-id" value="{{obj.id}}">Delete</button>
+                <button type="submit" class="btn btn-danger m-1" name="post-id" value="{{obj.id}}">Delete</button>
             </form>
         </div>
     </div>
+    <h4>Diagnosis</h4> <br>
+        {% for i in diagnosis %}
+            <a href="{% url 'view' model_name='diagnosis' id=i.id %}" class="card-header" style="text-decoration: none; color: inherit"><strong> {{i.admission_date}} </strong></a>
+        {% endfor %}
+    <h4>Hospital Stays</h4> <br>
+        {% for i in hospitalstay %}
+                <a href="{% url 'view' model_name='hospitalstay' id=i.id %}" class="card-header" style="text-decoration: none; color: inherit"><strong> {{i.admission_date}} </strong></a>
+        {% endfor %}
     {% elif name == 'Appointment' %}
     <div class="card-header"><strong>{{ obj.date }}</strong></div>
     <div class="card-body d-flex flex-row justify-content-between">
 
         <div>
-            Doctor: {{doctor.first_name}} {{doctor.last_name}}<br>
+            Doctor: {{doctor.first_name | title}} {{doctor.last_name | title}}<br>
             Patient: <a class="link-info link-offset-2" href="{% url 'view' model_name='patient' id=patient.id %}">{{patient.first_name}} {{patient.last_name}}</a><br>
             Goal of appointment: {{obj.goal_of_appointment}}<br>
         </div>
         <div>
-            <div>
+            <div class="m-1">
                 <a class="btn btn-success" href="{% url 'edit' model_name='appointment' id=obj.id %}">Edit</a>
             </div>
             <form method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-danger" name="post-id" value="{{obj.id}}">Delete</button>
+                <button type="submit" class="btn btn-danger m-1" name="post-id" value="{{obj.id}}">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% elif name == 'HospitalStay' %}
+    <div class="card-header"><strong>{{ obj.admission_date }}</strong></div>
+    <div class="card-body d-flex flex-row justify-content-between">
+
+        <div>
+            <strong>Admission Date:</strong> {{obj.admission_date}}<br>
+            <strong>Discharge Date:</strong> {{obj.discharge_date}}<br>
+            <strong>Doctor:</strong> {{doctor.first_name}} {{doctor.last_name}}<br>
+            <strong>Medical Procedures:</strong> {{obj.medical_procedures}}<br>
+           <strong> Additional Info:</strong> {{obj.additional_info}}<br>
+            <strong>Room: </strong>{{room}}<br>
+        </div>
+        <div>
+            <div class="m-1">
+                <a class="btn btn-success" href="{% url 'edit' model_name='hospitalstay' id=obj.id %}">Edit</a>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger m-1" name="post-id" value="{{obj.id}}">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% elif name == 'Diagnosis' %}
+    <div class="card-header"><strong>{{ obj.admission_date }}</strong></div>
+    <div class="card-body d-flex flex-row justify-content-between">
+
+        <div>
+            <strong>Doctor:</strong> {{doctor.first_name | title}} {{doctor.last_name | title}}<br>
+            <strong>Patient:</strong> {{patient.first_name}} {{patient.last_name}}<br>
+            <strong>Admission Date:</strong> {{obj.admission_date}}<br>
+           <strong>Reasons For Admission:</strong> {{obj.reasons_for_admission}}<br>
+           <strong>Diagnostic Tests:</strong> {{obj.diagnostic_tests}}<br>
+           <strong>Diagnosis:</strong> {{obj.diagnosis}}<br>
+           <strong>Treatment Plan:</strong> {{obj.treatment_plan}}<br>
+           <strong>Diagnosis Code:</strong> {{diagnosiscode}}<br>
+        </div>
+        <div>
+            <div class="m-1">
+                <a class="btn btn-success" href="{% url 'edit' model_name='hospitalstay' id=obj.id %}">Edit</a>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger m-1" name="post-id" value="{{obj.id}}">Delete</button>
             </form>
         </div>
     </div>

@@ -46,6 +46,9 @@ class DiagnosisCode(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True, default='')
     code = models.CharField(max_length=50, null=True, blank=True, default='')
 
+    def __str__(self):
+        return self.name + ' (' + self.code + ')'
+
 
 class ProcedureCode(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True, default='')
@@ -87,7 +90,9 @@ class Room(models.Model):
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        branch_obj = Branch.objects.filter(id=self.branch.id)[0]
+        hospital_obj = Hospital.objects.filter(id=branch_obj.hospital.id)[0]
+        return hospital_obj.name + '. ' + branch_obj.name + ', ' + self.name
 
 
 class HospitalStay(models.Model):
@@ -96,7 +101,6 @@ class HospitalStay(models.Model):
     medical_procedures = models.CharField(max_length=512, null=True, blank=True, default='')
     doctor = models.ForeignKey(User, on_delete=models.CASCADE)
     additional_info = models.CharField(max_length=512, null=True, blank=True, default='')
-    diagnosis = models.ForeignKey(Diagnosis, on_delete=models.CASCADE)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
 

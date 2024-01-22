@@ -1,20 +1,22 @@
 from django import forms
 from django.contrib.auth.forms import  UserCreationForm
 from django.contrib.auth.models import User, Group
-from django.forms import SelectDateWidget, DateField, ChoiceField, ModelChoiceField
+from django.forms import SelectDateWidget, DateField, ChoiceField, ModelChoiceField, Textarea, DateInput
 from .models import *
 
+class DateInputButBetter(DateInput):
+    input_type = 'date'
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
-
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
 
 
 class PatientForm(forms.ModelForm):
-    date_of_birth = DateField(widget=SelectDateWidget)
     sex = ChoiceField(choices=[(True, 'Male'), (False, 'Female')])
     status = ChoiceField(choices=[('Discharge', 'Discharge'), ('Admission', 'Admission'), ('Permit', 'Permit')])
 
@@ -23,6 +25,11 @@ class PatientForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'id_number', 'date_of_birth', 'sex', 'telephone',
                   'blood_group', 'chronic_diseases', 'medical_allergy', 'address_city', 'address_number',
                   'status']
+        widgets = {
+            'date_of_birth' : DateInputButBetter,
+            'chronic_diseases' : Textarea,
+            'medical_allergy' : Textarea,
+        }
 
 
 class AppointmentForm(forms.ModelForm):
@@ -32,17 +39,24 @@ class AppointmentForm(forms.ModelForm):
     class Meta:
         model = Appointment
         fields = ['doctor', 'patient', 'date', 'goal_of_appointment']
+        widgets = {
+            'goal_of_appointment' : Textarea,
+            'date' : DateInputButBetter,
+        }
 
 
 class DiagnosisForm(forms.ModelForm):
-    doctor_id = ModelChoiceField(queryset=User.objects.all())
-    patient_id = ModelChoiceField(queryset=Patient.objects.all())
-    diagnostic_code = ModelChoiceField(queryset=DiagnosisCode.objects.all())
+    doctor = ModelChoiceField(queryset=User.objects.filter(groups__name='Doctors'))
+    patient = ModelChoiceField(queryset=Patient.objects.all())
+    diagnosis_code = ModelChoiceField(queryset=DiagnosisCode.objects.all())
 
     class Meta:
         model = Diagnosis
-        fields = ['doctor_id', 'patient_id', 'admission_date', 'reasons_for_admission',
+        fields = ['doctor', 'patient', 'admission_date', 'reasons_for_admission',
                   'diagnostic_tests', 'diagnosis', 'treatment_plan', 'diagnosis_code']
+        widgets = {
+            'admission_date' : DateInputButBetter,
+        }
 
 
 class DiagnosisCodeForm(forms.ModelForm):
@@ -65,29 +79,35 @@ class HospitalForm(forms.ModelForm):
 
 
 class BranchForm(forms.ModelForm):
-    hospital_id = ModelChoiceField(queryset=Hospital.objects.all())
+    hospital = ModelChoiceField(queryset=Hospital.objects.all())
 
     class Meta:
         model = Branch
-        fields = ['name', 'hospital_id']
+        fields = ['name', 'hospital']
 
 
 class RoomForm(forms.ModelForm):
-    branch_id = ModelChoiceField(queryset=Branch.objects.all())
+    branch = ModelChoiceField(queryset=Branch.objects.all())
 
     class Meta:
         model = Room
-        fields = ['name', 'number_of_beds', 'branch_id']
+        fields = ['name', 'number_of_beds', 'branch']
 
 
 class HospitalStayForm(forms.ModelForm):
-    doctor_id = ModelChoiceField(queryset=User.objects.all())
-    patient_id = ModelChoiceField(queryset=Patient.objects.all())
-    diagnosis_id = ModelChoiceField(queryset=Diagnosis.objects.all())
-    room_id = ModelChoiceField(queryset=Room.objects.all())
+    admission_date = DateField(widget=SelectDateWidget)
+    discharge_date = DateField(widget=SelectDateWidget)
+    doctor = ModelChoiceField(queryset=User.objects.filter(groups__name='Doctors'))
+    patient = ModelChoiceField(queryset=Patient.objects.all())
+    room = ModelChoiceField(queryset=Room.objects.all())
 
     class Meta:
         model = HospitalStay
         fields = ['admission_date', 'discharge_date', 'medical_procedures',
-                  'doctor_id', 'additional_info', 'diagnosis_id', 'patient_id',
-                  'room_id']
+                  'doctor', 'additional_info', 'patient',
+                  'room']
+        widgets = {
+            'admission_date' : DateInputButBetter,
+            'discharge_date' : DateInputButBetter,
+            'additional_info' : Textarea,
+        }

@@ -8,4 +8,5 @@ urlpatterns = [
     path('create/<str:model_name>', views.create, name='create'),
     path('view/<str:model_name>/<int:id>', views.view, name='view'),
     path('edit/<str:model_name>/<int:id>', views.edit, name='edit'),
+    path('view/<str:model_name>', views.list, name='list'),
 ]
