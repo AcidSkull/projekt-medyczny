@@ -11,9 +11,10 @@ class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
+    group = ChoiceField(choices=[('Doctor', 'Doctor'), ('Receptionist', 'Receptionist')])
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'group']
 
 
 class PatientForm(forms.ModelForm):

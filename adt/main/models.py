@@ -8,7 +8,6 @@ from django.utils.timezone import now
 def user_str(self):
     return f'{self.first_name.capitalize()} {self.last_name.capitalize()}'
 
-
 User.add_to_class('__str__', user_str)
 
 

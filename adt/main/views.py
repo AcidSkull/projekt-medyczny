@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import permission_required
 from .models import *
 
 def  get_model(name):
@@ -54,7 +55,11 @@ def home(request):
 
 @login_required(login_url='/login')
 def create(request, model_name):
+    if not request.user.has_perm(f'main.add_{model_name.lower()}'):
+        return redirect('home')
+
     if request.method == 'POST':
+
         form = get_form(model_name, request.POST)
         if form.is_valid():
             form.save()
@@ -66,11 +71,16 @@ def create(request, model_name):
 
 @login_required(login_url='/login')
 def sign_up(request):
+    if not request.user.is_superuser:
+        return redirect('home')
+
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
+            group = Group.objects.get(name=request.POST.get('group'))
+            if group is not None:
+                user.groups.add(group)
             return redirect('/home')
     else:
         form = RegisterForm()
@@ -79,7 +89,13 @@ def sign_up(request):
 
 @login_required(login_url='/login')
 def view(request, model_name, id):
+    if not request.user.has_perm(f'main.view_{model_name.lower()}'):
+       return redirect('home')
+
     if request.method == 'POST':
+        if not request.user.has_perm(f'main.delete_{model_name.lower()}'):
+            return redirect('home')
+
         post_id = request.POST.get("post-id")
         obj = get_model(model_name)
         obj.objects.filter(id=post_id).first()
@@ -110,6 +126,9 @@ def view(request, model_name, id):
 
 @login_required(login_url='/login')
 def list(request, model_name):
+    if not request.user.has_perm(f'main.view_{model_name.lower()}'):
+        return redirect('home')
+
     obj = get_model(model_name)
     content = obj.objects.all()
 
@@ -117,6 +136,9 @@ def list(request, model_name):
 
 @login_required(login_url='/login')
 def edit(request, model_name, id):
+    if not request.user.has_perm(f'main.change_{model_name.lower()}'):
+        return redirect('home')
+
     obj = get_object_or_404(get_model(model_name), id=id)
 
     if request.method == 'POST':
