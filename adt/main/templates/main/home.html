@@ -93,5 +93,16 @@
             </div>
         </a>
     </div>
+    {% if request.user.is_superuser %}
+        <div>
+        <a href="/admin" class="text-decoration-none link-secondary">
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">Admin panel</h5>
+              </div>
+            </div>
+        </a>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

@@ -29,6 +29,9 @@
                   <a class="dropdown-item" href="/create/diagnosiscode">Create diagnosis code</a>
                   <a class="dropdown-item" href="/view/patient">View patients</a>
                   <a class="dropdown-item" href="/view/appointment">View appointments</a>
+                  {% if request.user.is_superuser %}
+                  <a class="dropdown-item" href="/admin">Admin panel</a>
+                  {% endif %}
               </div>
             </div>
 
