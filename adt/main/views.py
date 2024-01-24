@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import permission_required
+from django.core.exceptions import FieldDoesNotExist
 from .models import *
 
 def  get_model(name):
@@ -66,6 +67,12 @@ def create(request, model_name):
             return redirect('/home')
     else:
         form = get_form(model_name)
+
+        # field = None
+        # try:
+        #     field = form._meta.get_field('doctor')
+        # except FieldDoesNotExist:
+        #     pass
 
     return render(request, 'main/create.html', {"form": form, 'name': model_name})
 
@@ -130,7 +137,11 @@ def list(request, model_name):
         return redirect('home')
 
     obj = get_model(model_name)
-    content = obj.objects.all()
+
+    if model_name == 'appointment':
+        content = obj.objects.filter(doctor=request.user.id)
+    else:
+        content = obj.objects.all()
 
     return render(request, 'main/list.html', {'content': content, 'name': model_name})
 

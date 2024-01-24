@@ -3,6 +3,7 @@
 {% block content %}
 <h1>Home Page</h1>
 <div class="container">
+    {% if perms.main.add_patient %}
     <div>
         <a href="/create/patient" class="text-decoration-none link-secondary">
             <div class="card" style="width: 18rem;">
@@ -12,6 +13,8 @@
             </div>
         </a>
     </div>
+    {% endif %}
+    {% if perms.main.add_diagnosis %}
     <div>
         <a href="/create/diagnosis" class="text-decoration-none link-secondary">
             <div class="card" style="width: 18rem;">
@@ -21,6 +24,8 @@
             </div>
         </a>
     </div>
+    {% endif %}
+    {% if perms.main.add_appointment %}
     <div>
         <a href="/create/appointment" class="text-decoration-none link-secondary">
             <div class="card" style="width: 18rem;">
@@ -30,6 +35,8 @@
             </div>
         </a>
     </div>
+    {% endif %}
+    {% if perms.main.add_hospital %}
     <div>
         <a href="/create/hospital" class="text-decoration-none link-secondary">
             <div class="card" style="width: 18rem;">
@@ -39,6 +46,8 @@
             </div>
         </a>
     </div>
+    {% endif %}
+    {% if perms.main.add_branch %}
     <div>
         <a href="/create/branch" class="text-decoration-none link-secondary">
             <div class="card" style="width: 18rem;">
@@ -48,6 +57,8 @@
             </div>
         </a>
     </div>
+    {% endif %}
+    {% if perms.main.add_room %}
         <div>
         <a href="/create/room" class="text-decoration-none link-secondary">
             <div class="card" style="width: 18rem;">
@@ -57,6 +68,8 @@
             </div>
         </a>
     </div>
+    {% endif %}
+    {% if perms.main.add_diagnosiscode %}
         <div>
         <a href="/create/diagnosiscode" class="text-decoration-none link-secondary">
             <div class="card" style="width: 18rem;">
@@ -66,6 +79,8 @@
             </div>
         </a>
     </div>
+    {% endif %}
+    {% if perms.main.view_patient %}
         <div>
         <a href="/view/patient" class="text-decoration-none link-secondary">
             <div class="card" style="width: 18rem;">
@@ -75,6 +90,8 @@
             </div>
         </a>
     </div>
+    {% endif %}
+    {% if perms.main.view_appointment %}
         <div>
         <a href="/view/appointment" class="text-decoration-none link-secondary">
             <div class="card" style="width: 18rem;">
@@ -84,6 +101,7 @@
             </div>
         </a>
     </div>
+    {% endif %}
     {% if request.user.is_superuser %}
     <div>
         <a href="/sign_up" class="text-decoration-none link-secondary">

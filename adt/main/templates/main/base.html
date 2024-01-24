@@ -20,15 +20,33 @@
               </button>
               <div class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item" href="/home">Home</a>
+                  {% if perms.main.add_patient %}
                   <a class="dropdown-item" href="/create/patient">Create patient</a>
+                  {% endif %}
+                  {% if perms.main.add_diagnosis %}
                   <a class="dropdown-item" href="/create/diagnosis">Create diagnosis</a>
+                  {% endif %}
+                  {% if perms.main.add_appointment %}
                   <a class="dropdown-item" href="/create/appointment">Create appointment</a>
+                  {% endif %}
+                  {% if perms.main.add_hospital %}
                   <a class="dropdown-item" href="/create/hospital">Create hospital</a>
+                  {% endif %}
+                  {% if perms.main.add_branch %}
                   <a class="dropdown-item" href="/create/branch">Create branch</a>
+                  {% endif %}
+                  {% if perms.main.add_room %}
                   <a class="dropdown-item" href="/create/room">Create room</a>
+                  {% endif %}
+                  {% if perms.main.add_diagnosiscode %}
                   <a class="dropdown-item" href="/create/diagnosiscode">Create diagnosis code</a>
+                  {% endif %}
+                  {% if perms.main.view_patient %}
                   <a class="dropdown-item" href="/view/patient">View patients</a>
+                  {% endif %}
+                  {% if perms.main.view_appointment %}
                   <a class="dropdown-item" href="/view/appointment">View appointments</a>
+                  {% endif %}
                   {% if request.user.is_superuser %}
                   <a class="dropdown-item" href="/sign_up">Create user</a>
                   <a class="dropdown-item" href="/admin">Admin panel</a>
