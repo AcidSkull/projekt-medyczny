@@ -84,6 +84,7 @@
             </div>
         </a>
     </div>
+    {% if request.user.is_superuser %}
     <div>
         <a href="/sign_up" class="text-decoration-none link-secondary">
             <div class="card" style="width: 18rem;">
@@ -93,8 +94,7 @@
             </div>
         </a>
     </div>
-    {% if request.user.is_superuser %}
-        <div>
+    <div>
         <a href="/admin" class="text-decoration-none link-secondary">
             <div class="card" style="width: 18rem;">
               <div class="card-body">
