@@ -68,12 +68,6 @@ def create(request, model_name):
     else:
         form = get_form(model_name)
 
-        # field = None
-        # try:
-        #     field = form._meta.get_field('doctor')
-        # except FieldDoesNotExist:
-        #     pass
-
     return render(request, 'main/create.html', {"form": form, 'name': model_name})
 
 @login_required(login_url='/login')

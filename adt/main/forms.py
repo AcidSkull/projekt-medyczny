@@ -34,7 +34,7 @@ class PatientForm(forms.ModelForm):
 
 
 class AppointmentForm(forms.ModelForm):
-    doctor = ModelChoiceField(queryset=User.objects.filter(groups__name='Doctors'))
+    doctor = ModelChoiceField(queryset=User.objects.filter(groups__name='Doctor'))
     patient = ModelChoiceField(queryset=Patient.objects.all())
 
     class Meta:
@@ -47,7 +47,7 @@ class AppointmentForm(forms.ModelForm):
 
 
 class DiagnosisForm(forms.ModelForm):
-    doctor = ModelChoiceField(queryset=User.objects.filter(groups__name='Doctors'))
+    doctor = ModelChoiceField(queryset=User.objects.filter(groups__name='Doctor'))
     patient = ModelChoiceField(queryset=Patient.objects.all())
     diagnosis_code = ModelChoiceField(queryset=DiagnosisCode.objects.all())
 
@@ -98,7 +98,7 @@ class RoomForm(forms.ModelForm):
 class HospitalStayForm(forms.ModelForm):
     admission_date = DateField(widget=SelectDateWidget)
     discharge_date = DateField(widget=SelectDateWidget)
-    doctor = ModelChoiceField(queryset=User.objects.filter(groups__name='Doctors'))
+    doctor = ModelChoiceField(queryset=User.objects.filter(groups__name='Doctor'))
     patient = ModelChoiceField(queryset=Patient.objects.all())
     room = ModelChoiceField(queryset=Room.objects.all())
 
