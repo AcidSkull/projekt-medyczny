@@ -36,6 +36,17 @@
         </a>
     </div>
     {% endif %}
+    {% if perms.main.add_hospitalstay %}
+    <div>
+        <a href="/create/hospitalstay" class="text-decoration-none link-secondary">
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">Create hospital stay</h5>
+              </div>
+            </div>
+        </a>
+    </div>
+    {% endif %}
     {% if perms.main.add_hospital %}
     <div>
         <a href="/create/hospital" class="text-decoration-none link-secondary">

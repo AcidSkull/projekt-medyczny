@@ -96,8 +96,8 @@ class RoomForm(forms.ModelForm):
 
 
 class HospitalStayForm(forms.ModelForm):
-    admission_date = DateField(widget=SelectDateWidget)
-    discharge_date = DateField(widget=SelectDateWidget)
+    admission_date = DateField(widget=DateInputButBetter)
+    discharge_date = DateField(widget=DateInputButBetter, required=False)
     doctor = ModelChoiceField(queryset=User.objects.filter(groups__name='Doctor'))
     patient = ModelChoiceField(queryset=Patient.objects.all())
     room = ModelChoiceField(queryset=Room.objects.all())

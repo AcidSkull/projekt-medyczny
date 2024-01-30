@@ -134,7 +134,7 @@ def list(request, model_name):
 
     if model_name == 'appointment':
         content = obj.objects.filter(doctor=request.user.id)
-    else:
+    if request.user.is_superuser:
         content = obj.objects.all()
 
     return render(request, 'main/list.html', {'content': content, 'name': model_name})

@@ -30,6 +30,9 @@
                   <a class="dropdown-item" href="/create/appointment">Create appointment</a>
                   {% endif %}
                   {% if perms.main.add_hospital %}
+                  <a class="dropdown-item" href="/create/hospitalstay">Create hospital stay</a>
+                  {% endif %}
+                  {% if perms.main.add_hospital %}
                   <a class="dropdown-item" href="/create/hospital">Create hospital</a>
                   {% endif %}
                   {% if perms.main.add_branch %}
